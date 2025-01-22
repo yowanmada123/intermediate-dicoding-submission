@@ -6,7 +6,7 @@ import 'package:maresto/data/state/restaurant_add_review_state.dart';
 import 'package:maresto/data/state/restaurant_detail_state.dart';
 import 'package:maresto/presentation/widgets/image_widget.dart';
 import 'package:maresto/presentation/widgets/list_menu_widget.dart';
-import 'package:maresto/presentation/widgets/textField_custom_widget.dart';
+import 'package:maresto/presentation/widgets/text_field_custom_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:maresto/presentation/widgets/loading_widget.dart';
 
