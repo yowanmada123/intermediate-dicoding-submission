@@ -17,17 +17,33 @@ class HttpService {
   }
 
   Future<Uint8List> getByteArrayFromUrl(String url) async {
-    final response = await _client.get(Uri.parse(url));
-    return response.bodyBytes;
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        return response.bodyBytes;
+      } else {
+        throw Exception('Failed to load image: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Error fetching image: $e');
+      throw Exception('Failed to fetch image');
+    }
   }
 
   Future<String> downloadAndSaveFile(String url, String fileName) async {
-    final bytes = await getByteArrayFromUrl(url);
+    try {
+      final bytes = await getByteArrayFromUrl(url);
 
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final String filePath = '${directory.path}/$fileName';
-    final File file = File(filePath);
-    await file.writeAsBytes(bytes);
-    return filePath;
+      final Directory directory = await getApplicationDocumentsDirectory();
+      final String filePath = '${directory.path}/$fileName';
+      final File file = File(filePath);
+      await file.writeAsBytes(bytes);
+
+      debugPrint('File saved at: $filePath');
+      return filePath;
+    } catch (e) {
+      debugPrint('Failed to download or save file: $e');
+      throw Exception('Failed to download or save file');
+    }
   }
 }

@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:maresto/core/constants/app_constant.dart';
 import 'package:maresto/data/models/customer_review.dart';
 import 'package:maresto/data/models/restaurant_detail_response.dart';
 import 'package:maresto/data/models/restaurant_list_response.dart';
 
 class RestaurantRemoteDataSource {
-  final String baseUrl = 'https://restaurant-api.dicoding.dev';
-
   Future<Restaurant> fetchRestaurantList() async {
     final response = await http.get(Uri.parse('$baseUrl/list'));
     if (response.statusCode == 200) {

@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:maresto/core/constants/app_constant.dart';
 import 'package:maresto/data/models/received_notification.dart';
+import 'package:maresto/data/models/restaurant_list_response.dart';
 import 'package:maresto/data/services/http_service.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -191,8 +193,9 @@ class LocalNotificationService {
 
   Future<void> scheduleDailyElevenAMNotification({
     required int id,
-    String channelId = "3",
-    String channelName = "Schedule Notification",
+    required String channelId,
+    required String channelName,
+    required RestaurantInfo restaurant,
   }) async {
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       channelId,
@@ -213,8 +216,8 @@ class LocalNotificationService {
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
-      'Hi !!! its time to lunch',
-      'You have a meeting scheduled at 10:00 AM. Stay prepared!',
+      'Come To ${restaurant.name}',
+      'At ${restaurant.city} & Get Your Food',
       datetimeSchedule,
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,

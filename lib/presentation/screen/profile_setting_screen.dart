@@ -9,13 +9,27 @@ import 'package:maresto/data/services/local_notification_service.dart';
 import 'package:provider/provider.dart';
 
 class ProfileSettingsPage extends StatefulWidget {
-  const ProfileSettingsPage({super.key});
+  final ThemeProvider? themeProvider;
+  final AlarmProvider? alarmProvider;
+
+  const ProfileSettingsPage({
+    super.key,
+    this.themeProvider,
+    this.alarmProvider,
+  });
 
   @override
   _ProfileSettingsPageState createState() => _ProfileSettingsPageState();
 }
 
 class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
+  @override
+  void initState() {
+    super.initState();
+    _configureSelectNotificationSubject();
+    _configureDidReceiveLocalNotificationSubject();
+  }
+
   void _configureSelectNotificationSubject() {
     selectNotificationStream.stream.listen((String? payload) {
       context.read<PayloadProvider>().payload = payload;
@@ -35,22 +49,23 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _configureSelectNotificationSubject();
-    _configureDidReceiveLocalNotificationSubject();
-  }
-
-  @override
   void dispose() {
     selectNotificationStream.close();
     didReceiveLocalNotificationStream.close();
     super.dispose();
   }
 
+  Future<void> _requestPermission({LocalNotificationProvider? provider}) async {
+    final notificationProvider =
+        provider ?? context.read<LocalNotificationProvider>();
+    notificationProvider.requestPermissions();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeState = Provider.of<ThemeProvider>(context);
+    // Gunakan provider injeksi atau fallback ke Provider.of
+    final themeState =
+        widget.themeProvider ?? Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +82,9 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
           child: Column(
             children: [
               const Divider(),
+              // Theme toggle
               ListTile(
+                key: const Key('themeToggleTile'),
                 leading: Icon(
                   themeState.isDarkTheme ? Icons.dark_mode : Icons.light_mode,
                 ),
@@ -75,9 +92,10 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ? "Change To Light Mode"
                     : "Change To Dark Mode"),
                 trailing: Switch(
+                  key: const Key('themeToggleSwitch'),
                   value: themeState.isDarkTheme,
-                  onChanged: (value) {
-                    themeState.toggleTheme();
+                  onChanged: (value) async {
+                    await themeState.toggleTheme();
                   },
                 ),
               ),
@@ -85,6 +103,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               Consumer<AlarmProvider>(
                 builder: (context, alarmProvider, child) {
                   return ListTile(
+                    key: const Key('alarmToggleTile'),
                     leading: Icon(
                       alarmProvider.isAlarmOn ? Icons.alarm : Icons.alarm_off,
                     ),
@@ -92,6 +111,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                         ? "Alarm is on Set"
                         : "Alarm Off"),
                     trailing: Switch(
+                      key: const Key('alarmToggleSwitch'),
                       value: alarmProvider.isAlarmOn,
                       onChanged: (value) async {
                         await _requestPermission();
@@ -101,41 +121,21 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   );
                 },
               ),
+              ElevatedButton(
+                onPressed: () async {
+                  await _checkPendingNotificationRequests();
+                },
+                child: const Text(
+                  "Check pending notifications",
+                  textAlign: TextAlign.center,
+                ),
+              ),
               const Divider(),
-
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     await _scheduleDailyElevenAMNotification();
-              //   },
-              //   child: const Text(
-              //     "Schedule daily 10:00:00 am notification",
-              //     textAlign: TextAlign.center,
-              //   ),
-              // ),
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     await _checkPendingNotificationRequests();
-              //   },
-              //   child: const Text(
-              //     "Check pending notifications",
-              //     textAlign: TextAlign.center,
-              //   ),
-              // ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> _requestPermission() async {
-    context.read<LocalNotificationProvider>().requestPermissions();
-  }
-
-  Future<void> _scheduleDailyElevenAMNotification() async {
-    context
-        .read<LocalNotificationProvider>()
-        .scheduleDailyElevenAMNotification();
   }
 
   Future<void> _checkPendingNotificationRequests() async {
@@ -181,8 +181,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   trailing: IconButton(
                     onPressed: () {
                       localNotificationProvider
-                        ..cancelNotification()
-                        ..checkPendingNotificationRequests(context);
+                          // ..cancelNotification(item.id)
+                          .checkPendingNotificationRequests(context);
                     },
                     icon: const Icon(Icons.delete_outline),
                   ),

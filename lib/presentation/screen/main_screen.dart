@@ -18,11 +18,18 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: Consumer<IndexNavProvider>(
         builder: (context, value, child) {
-          return switch (value.indexBottomNavBar) {
-            2 => const ProfileSettingsPage(),
-            1 => const FavoriteScreen(),
-            _ => const HomeScreen(),
-          };
+          return Builder(
+            builder: (context) {
+              switch (value.indexBottomNavBar) {
+                case 2:
+                  return const ProfileSettingsPage();
+                case 1:
+                  return const FavoriteScreen();
+                default:
+                  return const HomeScreen();
+              }
+            },
+          );
         },
       ),
       bottomNavigationBar: BottomNavigationBar(

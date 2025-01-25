@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:maresto/data/models/restaurant_list_response.dart';
 import 'package:maresto/data/services/local_notification_service.dart';
 
 class LocalNotificationProvider extends ChangeNotifier {
@@ -17,13 +18,16 @@ class LocalNotificationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> scheduleDailyElevenAMNotification() async {
+  Future<void> scheduleDailyElevenAMNotification(
+      RestaurantInfo restaurant) async {
     await flutterNotificationService.scheduleDailyElevenAMNotification(
-      id: 1,
-      channelId: "3",
-      channelName: "Schedule Notification",
+        id: 1,
+        channelId: "3",
+        channelName: "Schedule Notification",
+        restaurant: restaurant);
+    debugPrint(
+      "Notification scheduled for 11 AM daily.",
     );
-    debugPrint("Notification scheduled for 11 AM daily.");
   }
 
   Future<void> checkPendingNotificationRequests(BuildContext context) async {

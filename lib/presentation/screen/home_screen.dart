@@ -22,10 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    final viewModel = Provider.of<RestaurantProvider>(context, listen: false);
+    final provider = Provider.of<RestaurantProvider>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      viewModel.fetchRestaurantList();
+      provider.fetchRestaurantList();
     });
 
     _searchController.addListener(_onSearchChanged);
@@ -40,15 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onSearchChanged() {
     final query = _searchController.text.trim();
-    final viewModel = Provider.of<RestaurantProvider>(context, listen: false);
+    final provider = Provider.of<RestaurantProvider>(context, listen: false);
 
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 500), () {
       if (query.isEmpty) {
-        viewModel.fetchRestaurantList();
+        provider.fetchRestaurantList();
       } else {
-        viewModel.searchRestaurants(query);
+        provider.searchRestaurants(query);
       }
     });
   }
@@ -88,8 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             Expanded(
               child: Consumer<RestaurantProvider>(
-                builder: (context, viewModel, child) {
-                  final state = viewModel.state;
+                builder: (context, provider, child) {
+                  final state = provider.state;
 
                   if (state is RestaurantLoading) {
                     return const Center(child: LoadingWidget());
@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(state.errorMessage),
                           const SizedBox(height: 16),
                           ElevatedButton(
-                            onPressed: viewModel.fetchRestaurantList,
+                            onPressed: provider.fetchRestaurantList,
                             child: const Text("Retry"),
                           ),
                         ],

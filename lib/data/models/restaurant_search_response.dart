@@ -11,7 +11,7 @@ String restaurantSearchToJson(RestaurantSearch data) =>
 class RestaurantSearch {
   bool error;
   int founded;
-  List<Restaurant> restaurants;
+  List<RestaurantInfo> restaurants;
 
   RestaurantSearch({
     required this.error,
@@ -23,8 +23,8 @@ class RestaurantSearch {
       RestaurantSearch(
         error: json["error"],
         founded: json["founded"],
-        restaurants: List<Restaurant>.from(
-            json["restaurants"].map((x) => Restaurant.fromJson(x))),
+        restaurants: List<RestaurantInfo>.from(
+            json["restaurants"].map((x) => RestaurantInfo.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

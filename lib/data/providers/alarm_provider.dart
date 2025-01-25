@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:maresto/data/dataresources/remote/restaurant_remote_data_source.dart';
+import 'package:maresto/data/models/restaurant_list_response.dart';
 import 'package:maresto/data/repositories/local/alarm_local_data_source.dart';
+import 'package:maresto/data/repositories/remote/restaurant_repository.dart';
 import 'package:maresto/data/services/workmanager_service.dart';
 
 class AlarmProvider extends ChangeNotifier {
@@ -29,10 +34,13 @@ class AlarmProvider extends ChangeNotifier {
     if (_isAlarmOn) {
       await workmanagerService.runPeriodicTask();
       if (workmanagerService.localNotificationProvider != null) {
-        await workmanagerService.localNotificationProvider
-            .scheduleDailyElevenAMNotification();
-        debugPrint("Alarm ON: Notification scheduled for 11 AM daily.");
-      } else {
+        final randomRestaurant = await _getRandomRestaurant();
+        if (randomRestaurant != null) {
+          await workmanagerService.localNotificationProvider
+              .scheduleDailyElevenAMNotification(randomRestaurant);
+          debugPrint(
+              "Alarm ON: Notification scheduled for 11 AM daily with random restaurant.");
+        }
         debugPrint("localNotificationProvider is null.");
       }
     } else {
@@ -43,5 +51,21 @@ class AlarmProvider extends ChangeNotifier {
 
     await alarmRepository.setAlarm(_isAlarmOn);
     notifyListeners();
+  }
+
+  Future<RestaurantInfo?> _getRandomRestaurant() async {
+    try {
+      final restaurantList = await RestaurantRepository(
+              remoteDataSource: RestaurantRemoteDataSource())
+          .fetchRestaurantList();
+      if (restaurantList.restaurants.isNotEmpty) {
+        // Pilih restoran acak
+        final randomIndex = Random().nextInt(restaurantList.restaurants.length);
+        return restaurantList.restaurants[randomIndex];
+      }
+    } catch (e) {
+      debugPrint("Error fetching random restaurant: $e");
+    }
+    return null;
   }
 }

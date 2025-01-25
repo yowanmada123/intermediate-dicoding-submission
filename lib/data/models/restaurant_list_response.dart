@@ -9,12 +9,14 @@ class Restaurant {
   bool error;
   String message;
   int count;
+  int founded;
   List<RestaurantInfo> restaurants;
 
   Restaurant({
     required this.error,
     required this.message,
     required this.count,
+    this.founded = 0,
     required this.restaurants,
   });
 
@@ -22,6 +24,7 @@ class Restaurant {
         error: json["error"],
         message: json["message"] ?? "",
         count: json["count"] ?? 0,
+        founded: json["founded"] ?? 0,
         restaurants: List<RestaurantInfo>.from(
             json["restaurants"].map((x) => RestaurantInfo.fromJson(x))),
       );
@@ -30,6 +33,7 @@ class Restaurant {
         "error": error,
         "message": message,
         "count": count,
+        "founded": founded,
         "restaurants": List<dynamic>.from(restaurants.map((x) => x.toJson())),
       };
 }

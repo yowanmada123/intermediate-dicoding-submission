@@ -19,7 +19,6 @@ void main() {
 
   group('RestaurantProvider - searchRestaurants', () {
     test('should search restaurants successfully', () async {
-      // Arrange: Buat data mock untuk pencarian restoran
       final mockRestaurants = Restaurant(
         error: false,
         message: 'success',
@@ -36,14 +35,11 @@ void main() {
         ],
       );
 
-      // Mock response dari repository
       when(() => mockRepository.fetchRestaurants('Melting'))
           .thenAnswer((_) async => mockRestaurants);
 
-      // Act: Panggil searchRestaurants
       await restaurantProvider.searchRestaurants('Melting');
 
-      // Assert: Periksa apakah state sudah berubah menjadi TourismListLoadedState dengan restoran yang benar
       expect(restaurantProvider.state, isA<TourismListLoadedState>());
       final loadedState = restaurantProvider.state as TourismListLoadedState;
       expect(loadedState.restaurants.length, 1);
@@ -51,17 +47,15 @@ void main() {
     });
 
     test('should handle error when searching restaurants fails', () async {
-      // Arrange: Mock repository untuk melempar error saat pencarian
       when(() => mockRepository.fetchRestaurants('Random'))
           .thenThrow(Exception('Failed to search restaurants'));
 
-      // Act: Panggil searchRestaurants
       await restaurantProvider.searchRestaurants('Random');
 
-      // Assert: Periksa apakah state berubah menjadi RestaurantError dengan pesan yang benar
       expect(restaurantProvider.state, isA<RestaurantError>());
       final errorState = restaurantProvider.state as RestaurantError;
-      expect(errorState.errorMessage, 'Failed to search restaurants');
+      expect(
+          errorState.errorMessage, 'Exception: Failed to search restaurants');
     });
   });
 }

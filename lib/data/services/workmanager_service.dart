@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:maresto/core/constants/my_workmanager.dart';
+import 'package:maresto/data/dataresources/remote/restaurant_remote_data_source.dart';
 import 'package:maresto/data/providers/local_notification_provider.dart';
+import 'package:maresto/data/repositories/remote/restaurant_repository.dart';
 import 'package:maresto/data/services/http_service.dart';
 import 'package:maresto/data/services/local_notification_service.dart';
 import 'package:workmanager/workmanager.dart';
@@ -11,20 +15,19 @@ void callbackDispatcher() {
     final httpService = HttpService();
     final localNotificationService = LocalNotificationService(httpService);
 
-    if (task == MyWorkmanager.oneOff.taskName ||
-        task == MyWorkmanager.oneOff.uniqueName ||
-        task == Workmanager.iOSBackgroundTask) {
-      debugPrint("Executing one-off task: $inputData");
-    } else if (task == MyWorkmanager.periodic.taskName) {
-      debugPrint("Executing periodic task");
+    final randomRestaurant = await RestaurantRepository(
+            remoteDataSource: RestaurantRemoteDataSource())
+        .fetchRestaurantList();
+    if (randomRestaurant.restaurants.isNotEmpty) {
+      final randomIndex = Random().nextInt(randomRestaurant.restaurants.length);
+      final restaurant = randomRestaurant.restaurants[randomIndex];
 
       await localNotificationService.scheduleDailyElevenAMNotification(
-        id: 1,
-        channelId: "3",
-        channelName: "Schedule Notification",
-      );
+          id: 1,
+          channelId: "3",
+          channelName: "Schedule Notification",
+          restaurant: restaurant);
     }
-
     return Future.value(true);
   });
 }

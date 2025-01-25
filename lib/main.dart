@@ -114,22 +114,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeViewModel = Provider.of<ThemeProvider>(context);
-    return MaterialApp(
-      title: 'Maresto',
-      debugShowCheckedModeBanner: false,
-      theme: buildLightTheme(),
-      darkTheme: buildDarkTheme(),
-      themeMode: themeViewModel.currentTheme,
-      initialRoute: NavigationRoute.mainRoute.name,
-      routes: {
-        NavigationRoute.mainRoute.name: (context) => const MainScreen(),
-        NavigationRoute.detailRoute.name: (context) => DetailScreen(
-              restaurantId:
-                  ModalRoute.of(context)?.settings.arguments as String,
-            ),
-        NavigationRoute.settingRoute.name: (context) =>
-            const ProfileSettingsPage(),
+    return Builder(
+      builder: (context) {
+        final themeViewModel = Provider.of<ThemeProvider>(context);
+
+        return MaterialApp(
+          title: 'Maresto',
+          debugShowCheckedModeBanner: false,
+          theme: buildLightTheme(),
+          darkTheme: buildDarkTheme(),
+          themeMode: themeViewModel.currentTheme,
+          initialRoute: NavigationRoute.mainRoute.name,
+          routes: {
+            NavigationRoute.mainRoute.name: (context) => const MainScreen(),
+            NavigationRoute.detailRoute.name: (context) => DetailScreen(
+                  restaurantId:
+                      ModalRoute.of(context)?.settings.arguments as String,
+                ),
+          },
+        );
       },
     );
   }

@@ -43,7 +43,7 @@ void main() {
         ],
       );
 
-      // Mock response dari repository
+      // Arrange: Mock response dari repository
       when(() => mockRepository.fetchRestaurantList())
           .thenAnswer((_) async => mockRestaurants);
 
