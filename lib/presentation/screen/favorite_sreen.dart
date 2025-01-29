@@ -68,6 +68,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 final restaurant = restaurants[index];
                 return RestaurantCard(
                   restaurant: restaurant,
+                  key: const ValueKey("actionToDetail"),
                   onTap: () {
                     Navigator.pushNamed(
                       context,

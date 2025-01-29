@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:maresto/core/constants/app_constant.dart';
 import 'package:maresto/data/models/received_notification.dart';
 import 'package:maresto/data/models/restaurant_list_response.dart';
 import 'package:maresto/data/services/http_service.dart';

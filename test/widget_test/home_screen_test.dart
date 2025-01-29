@@ -19,6 +19,8 @@ void main() {
   testWidgets('should show loading state when restaurants are being fetched',
       (WidgetTester tester) async {
     when(() => mockRestaurantProvider.state).thenReturn(RestaurantLoading());
+    when(() => mockRestaurantProvider.fetchRestaurantList())
+        .thenAnswer((_) async => Future.value());
 
     await tester.pumpWidget(
       MaterialApp(
@@ -28,8 +30,6 @@ void main() {
         ),
       ),
     );
-
-    await tester.pumpAndSettle();
 
     expect(find.byType(LoadingWidget), findsOneWidget);
   });
@@ -38,6 +38,8 @@ void main() {
       (WidgetTester tester) async {
     when(() => mockRestaurantProvider.state)
         .thenReturn(RestaurantError('Failed to load restaurants'));
+    when(() => mockRestaurantProvider.fetchRestaurantList())
+        .thenAnswer((_) async => Future.value());
 
     await tester.pumpWidget(
       MaterialApp(
@@ -47,7 +49,6 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
 
     expect(find.text('Failed to load restaurants'), findsOneWidget);
   });

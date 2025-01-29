@@ -113,6 +113,7 @@ class DetailScreen extends StatelessWidget {
                     },
                   ),
                   leading: IconButton(
+                    key: const ValueKey("actionBackToListRestaurant"),
                     icon: const Icon(
                       Icons.arrow_back,
                       color: Colors.white,
@@ -126,6 +127,7 @@ class DetailScreen extends StatelessWidget {
                     Consumer<FavoriteRestaurantProvider>(
                       builder: (context, favoriteProvider, child) {
                         return IconButton(
+                          key: const ValueKey("favoriteIcon"),
                           icon: favoriteProvider.isLoading
                               ? const LoadingWidget()
                               : Icon(

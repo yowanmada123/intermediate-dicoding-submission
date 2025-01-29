@@ -22,7 +22,7 @@ class _MainScreenState extends State<MainScreen> {
             builder: (context) {
               switch (value.indexBottomNavBar) {
                 case 2:
-                  return const ProfileSettingsPage();
+                  return const ProfileSettingsScreen();
                 case 1:
                   return const FavoriteScreen();
                 default:
@@ -42,16 +42,19 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.home),
             label: "Home",
             tooltip: "Home",
+            key: ValueKey("bottomNavHome"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: "Favorite",
             tooltip: "Favorite",
+            key: ValueKey("bottomNavFavorite"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: "Setting",
             tooltip: "Setting",
+            key: ValueKey("bottomNavProfile"),
           ),
         ],
       ),

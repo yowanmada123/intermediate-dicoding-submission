@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
+                key: const ValueKey("formulaField"),
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: "Search restaurants...",
@@ -122,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         final restaurant = state.restaurants[index];
                         return RestaurantCard(
                           restaurant: restaurant,
+                          key: const ValueKey("actionToDetail"),
                           onTap: () {
                             Navigator.pushNamed(
                               context,

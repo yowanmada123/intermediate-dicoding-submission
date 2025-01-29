@@ -8,21 +8,21 @@ import 'package:maresto/data/providers/theme_provider.dart';
 import 'package:maresto/data/services/local_notification_service.dart';
 import 'package:provider/provider.dart';
 
-class ProfileSettingsPage extends StatefulWidget {
+class ProfileSettingsScreen extends StatefulWidget {
   final ThemeProvider? themeProvider;
   final AlarmProvider? alarmProvider;
 
-  const ProfileSettingsPage({
+  const ProfileSettingsScreen({
     super.key,
     this.themeProvider,
     this.alarmProvider,
   });
 
   @override
-  _ProfileSettingsPageState createState() => _ProfileSettingsPageState();
+  _ProfileSettingsScreenState createState() => _ProfileSettingsScreenState();
 }
 
-class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
+class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   @override
   void initState() {
     super.initState();
@@ -63,9 +63,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Gunakan provider injeksi atau fallback ke Provider.of
-    final themeState =
-        widget.themeProvider ?? Provider.of<ThemeProvider>(context);
+    final themeState = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
