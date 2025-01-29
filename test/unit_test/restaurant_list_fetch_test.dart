@@ -18,7 +18,6 @@ void main() {
 
   group('RestaurantProvider - fetchRestaurantList', () {
     test('should fetch restaurant list successfully', () async {
-      // Arrange: Buat data mock yang sesuai dengan model Restaurant dan RestaurantInfo
       final mockRestaurants = Restaurant(
         error: false,
         message: 'success',
@@ -42,15 +41,11 @@ void main() {
           ),
         ],
       );
-
-      // Arrange: Mock response dari repository
       when(() => mockRepository.fetchRestaurantList())
           .thenAnswer((_) async => mockRestaurants);
 
-      // Act: Panggil fetchRestaurantList
       await restaurantProvider.fetchRestaurantList();
 
-      // Assert: Periksa apakah state sudah berubah menjadi TourismListLoadedState dengan restoran yang benar
       expect(restaurantProvider.state, isA<TourismListLoadedState>());
       final loadedState = restaurantProvider.state as TourismListLoadedState;
       expect(loadedState.restaurants.length, 2);
@@ -58,14 +53,11 @@ void main() {
     });
 
     test('should handle error when fetching restaurant list fails', () async {
-      // Arrange: Mock repository untuk melempar error
       when(() => mockRepository.fetchRestaurantList())
           .thenThrow(Exception('Failed to load restaurant list'));
 
-      // Act: Panggil fetchRestaurantList
       await restaurantProvider.fetchRestaurantList();
 
-      // Assert: Periksa apakah state berubah menjadi RestaurantError dengan pesan yang benar
       expect(restaurantProvider.state, isA<RestaurantError>());
       final errorState = restaurantProvider.state as RestaurantError;
       expect(

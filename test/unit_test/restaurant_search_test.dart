@@ -5,7 +5,6 @@ import 'package:maresto/data/repositories/remote/restaurant_repository.dart';
 import 'package:maresto/data/state/restaurant_state.dart';
 import 'package:mocktail/mocktail.dart';
 
-// Mock class untuk repository
 class MockRestaurantRepository extends Mock implements RestaurantRepository {}
 
 void main() {

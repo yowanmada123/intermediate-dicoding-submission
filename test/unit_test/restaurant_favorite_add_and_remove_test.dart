@@ -4,7 +4,6 @@ import 'package:maresto/data/providers/restaurant_favorite_provider.dart';
 import 'package:maresto/data/repositories/local/favorite_restaurant_data_source.dart';
 import 'package:mocktail/mocktail.dart';
 
-// Mock untuk FavoriteRepository
 class MockFavoriteRepository extends Mock implements FavoriteRepository {}
 
 void main() {
