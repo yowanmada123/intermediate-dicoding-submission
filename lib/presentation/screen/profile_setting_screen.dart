@@ -179,7 +179,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                   trailing: IconButton(
                     onPressed: () {
                       localNotificationProvider
-                          // ..cancelNotification(item.id)
                           .checkPendingNotificationRequests(context);
                     },
                     icon: const Icon(Icons.delete_outline),

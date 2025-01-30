@@ -287,28 +287,30 @@ class DetailScreen extends StatelessWidget {
                             children: restaurant.customerReviews.reversed
                                 .skip(state.currentPage * state.reviewsPerPage)
                                 .take(state.reviewsPerPage)
-                                .map((review) {
-                              return Card(
-                                elevation: 2,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundColor: theme.cardColor,
-                                    child: Text(review.name[0].toUpperCase(),
+                                .map(
+                              (review) {
+                                return Card(
+                                  elevation: 2,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: theme.cardColor,
+                                      child: Text(review.name[0].toUpperCase(),
+                                          style: textTheme.bodyMedium),
+                                    ),
+                                    title: Text(review.name,
+                                        style: textTheme.bodyLarge),
+                                    subtitle: Text(review.review,
                                         style: textTheme.bodyMedium),
+                                    trailing: Text(
+                                      review.date,
+                                      style: textTheme.bodySmall,
+                                    ),
                                   ),
-                                  title: Text(review.name,
-                                      style: textTheme.bodyLarge),
-                                  subtitle: Text(review.review,
-                                      style: textTheme.bodyMedium),
-                                  trailing: Text(
-                                    review.date,
-                                    style: textTheme.bodySmall,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                                );
+                              },
+                            ).toList(),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

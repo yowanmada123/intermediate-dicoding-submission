@@ -11,25 +11,28 @@ import 'package:workmanager/workmanager.dart';
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    final httpService = HttpService();
-    final localNotificationService = LocalNotificationService(httpService);
+  Workmanager().executeTask(
+    (task, inputData) async {
+      final httpService = HttpService();
+      final localNotificationService = LocalNotificationService(httpService);
 
-    final randomRestaurant = await RestaurantRepository(
-            remoteDataSource: RestaurantRemoteDataSource())
-        .fetchRestaurantList();
-    if (randomRestaurant.restaurants.isNotEmpty) {
-      final randomIndex = Random().nextInt(randomRestaurant.restaurants.length);
-      final restaurant = randomRestaurant.restaurants[randomIndex];
+      final randomRestaurant = await RestaurantRepository(
+              remoteDataSource: RestaurantRemoteDataSource())
+          .fetchRestaurantList();
+      if (randomRestaurant.restaurants.isNotEmpty) {
+        final randomIndex =
+            Random().nextInt(randomRestaurant.restaurants.length);
+        final restaurant = randomRestaurant.restaurants[randomIndex];
 
-      await localNotificationService.scheduleDailyElevenAMNotification(
-          id: 1,
-          channelId: "3",
-          channelName: "Schedule Notification",
-          restaurant: restaurant);
-    }
-    return Future.value(true);
-  });
+        await localNotificationService.scheduleDailyElevenAMNotification(
+            id: 1,
+            channelId: "3",
+            channelName: "Schedule Notification",
+            restaurant: restaurant);
+      }
+      return Future.value(true);
+    },
+  );
 }
 
 class WorkmanagerService {
@@ -42,7 +45,10 @@ class WorkmanagerService {
   }) : _workmanager = workmanager ?? Workmanager();
 
   Future<void> init() async {
-    await _workmanager.initialize(callbackDispatcher, isInDebugMode: true);
+    await _workmanager.initialize(
+      callbackDispatcher,
+      isInDebugMode: true,
+    );
   }
 
   Future<void> runOneOffTask() async {
