@@ -25,9 +25,6 @@ class LocalNotificationProvider extends ChangeNotifier {
         channelId: "3",
         channelName: "Schedule Notification",
         restaurant: restaurant);
-    debugPrint(
-      "Notification scheduled for 11 AM daily.",
-    );
   }
 
   Future<void> checkPendingNotificationRequests(BuildContext context) async {

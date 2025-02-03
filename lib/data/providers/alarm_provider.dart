@@ -28,8 +28,9 @@ class AlarmProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleAlarm() async {
+  Future<String> toggleAlarm() async {
     _isAlarmOn = !_isAlarmOn;
+    var msg = '';
 
     if (_isAlarmOn) {
       await workmanagerService.runPeriodicTask();
@@ -38,19 +39,19 @@ class AlarmProvider extends ChangeNotifier {
         if (randomRestaurant != null) {
           await workmanagerService.localNotificationProvider
               .scheduleDailyElevenAMNotification(randomRestaurant);
-          debugPrint(
-              "Alarm ON: Notification scheduled for 11 AM daily with random restaurant.");
+          msg =
+              "Alarm ON: Notification scheduled for 11 AM daily with random restaurant.";
         }
-        debugPrint("localNotificationProvider is null.");
       }
     } else {
       await workmanagerService.cancelAllTask();
       await workmanagerService.localNotificationProvider.cancelNotification();
-      debugPrint("Alarm OFF: All tasks and notifications canceled.");
+      msg = "Alarm OFF: All tasks and notifications canceled.";
     }
 
     await alarmRepository.setAlarm(_isAlarmOn);
     notifyListeners();
+    return msg;
   }
 
   Future<RestaurantInfo?> _getRandomRestaurant() async {
@@ -59,12 +60,11 @@ class AlarmProvider extends ChangeNotifier {
               remoteDataSource: RestaurantRemoteDataSource())
           .fetchRestaurantList();
       if (restaurantList.restaurants.isNotEmpty) {
-        // Pilih restoran acak
         final randomIndex = Random().nextInt(restaurantList.restaurants.length);
         return restaurantList.restaurants[randomIndex];
       }
     } catch (e) {
-      debugPrint("Error fetching random restaurant: $e");
+      return null;
     }
     return null;
   }

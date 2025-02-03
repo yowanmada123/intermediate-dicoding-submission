@@ -98,7 +98,6 @@ class SqliteService {
     return result;
   }
 
-  // Menghapus database lama
   Future<void> clearDatabase() async {
     var dbPath = await getDatabasesPath();
     var path = join(dbPath, _databaseName);

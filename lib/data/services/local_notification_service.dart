@@ -126,54 +126,6 @@ class LocalNotificationService {
     );
   }
 
-  Future<void> showBigPictureNotification({
-    required int id,
-    required String title,
-    required String body,
-    required String payload,
-    String channelId = "2",
-    String channelName = "Big Picture Notification",
-  }) async {
-    final String largeIconPath = await httpService.downloadAndSaveFile(
-        'https://dummyimage.com/48x48', 'largeIcon');
-
-    final String bigPicturePath = await httpService.downloadAndSaveFile(
-        'https://dummyimage.com/600x200', 'bigPicture.jpg');
-
-    final BigPictureStyleInformation bigPictureStyleInformation =
-        BigPictureStyleInformation(FilePathAndroidBitmap(bigPicturePath),
-            hideExpandedLargeIcon: true,
-            contentTitle: 'overridden <b>big</b> content title',
-            htmlFormatContentTitle: true,
-            summaryText: 'summary <i>text</i>',
-            htmlFormatSummaryText: true);
-
-    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        channelId, channelName,
-        importance: Importance.max,
-        priority: Priority.high,
-        largeIcon: FilePathAndroidBitmap(largeIconPath),
-        styleInformation: bigPictureStyleInformation);
-
-    final iOSPlatformChannelSpecifics = DarwinNotificationDetails(attachments: [
-      DarwinNotificationAttachment(
-        bigPicturePath,
-        hideThumbnail: false,
-      )
-    ]);
-
-    final notificationDetails = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-    await flutterLocalNotificationsPlugin.show(
-        id,
-        'notification with attachment title',
-        'notification with attachment body',
-        notificationDetails,
-        payload: payload);
-  }
-
   Future<void> configureLocalTimeZone() async {
     tz.initializeTimeZones();
     final String timeZoneName = await FlutterTimezone.getLocalTimezone();

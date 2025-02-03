@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:maresto/core/constants/my_workmanager.dart';
 import 'package:maresto/data/dataresources/remote/restaurant_remote_data_source.dart';
 import 'package:maresto/data/providers/local_notification_provider.dart';
@@ -63,7 +61,6 @@ class WorkmanagerService {
         "data": "This is a payload from one-off task",
       },
     );
-    debugPrint("One-off task registered");
   }
 
   Future<void> runPeriodicTask() async {
@@ -79,6 +76,5 @@ class WorkmanagerService {
 
   Future<void> cancelAllTask() async {
     await _workmanager.cancelAll();
-    debugPrint("All tasks canceled");
   }
 }

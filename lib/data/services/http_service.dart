@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 class HttpService {
   final http.Client _client;
@@ -25,25 +22,7 @@ class HttpService {
         throw Exception('Failed to load image: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Error fetching image: $e');
       throw Exception('Failed to fetch image');
-    }
-  }
-
-  Future<String> downloadAndSaveFile(String url, String fileName) async {
-    try {
-      final bytes = await getByteArrayFromUrl(url);
-
-      final Directory directory = await getApplicationDocumentsDirectory();
-      final String filePath = '${directory.path}/$fileName';
-      final File file = File(filePath);
-      await file.writeAsBytes(bytes);
-
-      debugPrint('File saved at: $filePath');
-      return filePath;
-    } catch (e) {
-      debugPrint('Failed to download or save file: $e');
-      throw Exception('Failed to download or save file');
     }
   }
 }

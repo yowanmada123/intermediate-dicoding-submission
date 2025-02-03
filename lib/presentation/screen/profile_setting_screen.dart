@@ -80,7 +80,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
           child: Column(
             children: [
               const Divider(),
-              // Theme toggle
               ListTile(
                 key: const Key('themeToggleTile'),
                 leading: Icon(
@@ -113,7 +112,16 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       value: alarmProvider.isAlarmOn,
                       onChanged: (value) async {
                         await _requestPermission();
-                        await alarmProvider.toggleAlarm();
+                        var msg = await alarmProvider.toggleAlarm();
+                        ScaffoldMessenger.of(context).clearSnackBars();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(msg),
+                            backgroundColor: Colors.greenAccent[400],
+                            duration: const Duration(milliseconds: 500),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
                       },
                     ),
                   );
@@ -176,13 +184,13 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   contentPadding: EdgeInsets.zero,
-                  trailing: IconButton(
-                    onPressed: () {
-                      localNotificationProvider
-                          .checkPendingNotificationRequests(context);
-                    },
-                    icon: const Icon(Icons.delete_outline),
-                  ),
+                  // trailing: IconButton(
+                  //   onPressed: () {
+                  //     localNotificationProvider
+                  //         .checkPendingNotificationRequests(context);
+                  //   },
+                  //   icon: const Icon(Icons.delete_outline),
+                  // ),
                 );
               },
             ),

@@ -24,6 +24,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)?.isCurrent != true) return;
+    Future.microtask(() {
+      Provider.of<FavoriteRestaurantProvider>(context, listen: false)
+          .loadFavorites();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -74,12 +84,30 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       context,
                       NavigationRoute.detailRoute.name,
                       arguments: restaurant.id,
-                    );
+                    ).then((_) {
+                      Future.microtask(() {
+                        Provider.of<FavoriteRestaurantProvider>(context,
+                                listen: false)
+                            .loadFavorites();
+                      });
+                    });
                   },
                   isFavoriteCard: true,
                   onDelete: () async {
-                    await favoriteProvider.removeFromFavorites(restaurant.id);
+                    var msg = "";
+                    msg = await favoriteProvider
+                        .removeFromFavorites(restaurant.id);
                     await favoriteProvider.loadFavorites();
+                    ScaffoldMessenger.of(context).clearSnackBars();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(msg),
+                        backgroundColor: Colors.greenAccent[400],
+                        duration: const Duration(milliseconds: 500),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
                   },
                 );
               },

@@ -30,30 +30,38 @@ class FavoriteRestaurantProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> addToFavorites(RestaurantInfo restaurant) async {
+  Future addToFavorites(RestaurantInfo restaurant) async {
+    var msg = "";
+
     try {
       _isLoading = true;
+      msg = "success add to favorite";
+
       notifyListeners();
 
       await _favoriteRepository.addRestaurantToFavorites(restaurant);
     } catch (e) {
-      debugPrint("Error adding to favorites: $e");
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      msg = "Error adding to favorites: $e";
     }
+    _isLoading = false;
+    notifyListeners();
+    return msg;
   }
 
-  Future<void> removeFromFavorites(String restaurantId) async {
+  Future removeFromFavorites(String restaurantId) async {
+    var msg = "";
     try {
       _isLoading = true;
+      msg = "success remove from favorite";
+
       notifyListeners();
+
       await _favoriteRepository.removeRestaurantFromFavorites(restaurantId);
     } catch (e) {
-      debugPrint("Error removing from favorites: $e");
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      msg = "Error removing from favorites: $e";
     }
+    _isLoading = false;
+    notifyListeners();
+    return msg;
   }
 }

@@ -29,8 +29,8 @@ dependencies:
   test: ^1.25.8
   mocktail: ^1.0.4
   integration_test_preview: ^0.1.0
-  mockito: ^5.4.5
-  build_runner: ^2.4.14
+  google_fonts: ^6.2.1
+  fluttertoast: ^8.2.10
 
 dev_dependencies:
   flutter_test:
@@ -53,3 +53,4 @@ flutter:
   assets:
     - assets/
     - assets/logo/
+    - assets/logo/logoapps.png

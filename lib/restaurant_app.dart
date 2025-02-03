@@ -43,7 +43,6 @@ class RestaurantApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Basic service providers
         Provider<HttpService>(
           create: (_) => HttpService(),
         ),
@@ -54,8 +53,6 @@ class RestaurantApp extends StatelessWidget {
             ..init()
             ..configureLocalTimeZone(),
         ),
-
-        // Notification and Payload management
         ChangeNotifierProvider<LocalNotificationProvider>(
           create: (context) => LocalNotificationProvider(
             context.read<LocalNotificationService>(),
@@ -70,21 +67,15 @@ class RestaurantApp extends StatelessWidget {
                 context.read<LocalNotificationProvider>(),
           )..init(),
         ),
-
-        // Restaurant providers
         ChangeNotifierProvider<RestaurantProvider>(
           create: (_) => RestaurantProvider(repository: repository),
         ),
         ChangeNotifierProvider<RestaurantDetailProvider>(
           create: (_) => RestaurantDetailProvider(repository: repository),
         ),
-
-        // UI State management
         ChangeNotifierProvider<IndexNavProvider>(
           create: (_) => IndexNavProvider(),
         ),
-
-        // Theme management
         Provider<ThemeLocalDataSource>(
           create: (_) => ThemeLocalDataSource(),
         ),
@@ -98,8 +89,6 @@ class RestaurantApp extends StatelessWidget {
             context.read<ThemeRepository>(),
           ),
         ),
-
-        // Alarm providers
         Provider<AlarmLocalDataSource>(
           create: (_) => AlarmLocalDataSource(),
         ),
@@ -114,8 +103,6 @@ class RestaurantApp extends StatelessWidget {
             context.read<WorkmanagerService>(),
           ),
         ),
-
-        // Favorites management
         Provider<FavoriteRepository>(
           create: (_) => FavoriteRepository(SqliteService.instance),
         ),

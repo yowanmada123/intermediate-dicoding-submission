@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maresto/core/constants/app_constant.dart';
 import 'package:maresto/presentation/themes/theme_text.dart';
 
@@ -20,8 +21,8 @@ ThemeData buildDarkTheme() {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,
         backgroundColor: oPrimary,
-        textStyle: const TextStyle(
-          fontFamily: 'Roboto',
+        textStyle: TextStyle(
+          fontFamily: GoogleFonts.lato().fontFamily,
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),

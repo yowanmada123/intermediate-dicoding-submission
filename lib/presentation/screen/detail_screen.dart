@@ -138,13 +138,13 @@ class DetailScreen extends StatelessWidget {
                                 ),
                           onPressed: () async {
                             if (favoriteProvider.isLoading) return;
-
+                            var msg = "";
                             if (isFavorite) {
-                              await favoriteProvider
+                              msg = await favoriteProvider
                                   .removeFromFavorites(restaurant.id);
                               isFavorite = !isFavorite;
                             } else {
-                              await favoriteProvider.addToFavorites(
+                              msg = await favoriteProvider.addToFavorites(
                                 RestaurantInfo(
                                   id: restaurant.id,
                                   name: restaurant.name,
@@ -156,6 +156,15 @@ class DetailScreen extends StatelessWidget {
                               );
                               isFavorite = !isFavorite;
                             }
+                            ScaffoldMessenger.of(context).clearSnackBars();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(msg),
+                                backgroundColor: Colors.greenAccent[400],
+                                duration: const Duration(milliseconds: 500),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
                           },
                         );
                       },
