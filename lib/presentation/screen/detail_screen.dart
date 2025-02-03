@@ -160,8 +160,9 @@ class DetailScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(msg),
-                                backgroundColor: Colors.greenAccent[400],
-                                duration: const Duration(milliseconds: 500),
+                                backgroundColor:
+                                    const Color.fromARGB(255, 7, 197, 105),
+                                duration: const Duration(milliseconds: 300),
                                 behavior: SnackBarBehavior.floating,
                               ),
                             );

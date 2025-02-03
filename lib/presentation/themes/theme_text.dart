@@ -9,13 +9,19 @@ TextTheme buildTextTheme(TextTheme base, {bool isDark = false}) {
     headlineLarge: base.headlineLarge?.copyWith(
       fontFamily: GoogleFonts.lato().fontFamily,
       fontSize: 18,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: primaryTextColor,
     ),
     headlineMedium: base.headlineMedium?.copyWith(
       fontFamily: GoogleFonts.lato().fontFamily,
       fontSize: 16,
       fontWeight: FontWeight.w500,
+      color: primaryTextColor,
+    ),
+    headlineSmall: base.headlineMedium?.copyWith(
+      fontFamily: GoogleFonts.lato().fontFamily,
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
       color: primaryTextColor,
     ),
     bodyLarge: base.bodyLarge?.copyWith(
